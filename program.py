@@ -3,7 +3,9 @@ from tkinter import filedialog, messagebox
 
 
 class Notatnik:
+    '''Klasa odpowiadajaca za wswietlanie i dzialanie samego programu'''
     def __init__(self, root):
+        '''Wykorzystwane do stworzenia calej strukuty notatika'''
         self.root = root
         self.root.title("Mini Notatnik")
         self.root.geometry("600x400")
@@ -41,10 +43,12 @@ class Notatnik:
         )
 
     def nowy_plik(self):
+        '''Wykorzystywana do tworzenia nowego pliku'''
         if self.czy_zapisac():
             self.tekst.delete(1.0, tk.END)
 
     def otworz_plik(self):
+        ''' Wykorzystywana do otwierania pliku'''
         if not self.czy_zapisac():
             return
         sciezka = filedialog.askopenfilename(
@@ -56,6 +60,7 @@ class Notatnik:
                 self.tekst.insert(tk.END, plik.read())
 
     def zapisz_plik(self):
+        ''' Wykorzysytwana do zapisu '''
         sciezka = filedialog.asksaveasfilename(
             defaultextension=".txt", filetypes=[("Pliki tekstowe", "*.txt")]
         )
@@ -64,6 +69,7 @@ class Notatnik:
                 plik.write(self.tekst.get(1.0, tk.END))
 
     def czy_zapisac(self):
+        ''' Wykorzystywana do zapytania uzytkownika czy zapisac dany projekt '''
         if self.tekst.edit_modified():
             odp = messagebox.askyesnocancel("Zapisz", "Czy chcesz zapisać zmiany?")
             if odp:
@@ -72,8 +78,15 @@ class Notatnik:
         return True
 
     def zamknij(self):
+        ''' Wykorzystywana do zamkniecia programu po wcześniejszym zaptaniu uzytknownika o zapis '''
         if self.czy_zapisac():
             self.root.destroy()
+    
+    def zaznacz_wszystko(self):
+        '''Zaznaczanie całego tekstu w edytorze'''
+        self.tekst.tag_add("sel", "1.0", "end-1c")
+        self.tekst.mark_set("insert", "1.0")
+        self.tekst.see("insert")
 
 
 if __name__ == "__main__":
